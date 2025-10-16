@@ -1,0 +1,35 @@
+database:
+  mongodb:
+    host: localhost
+    port: 27017
+    username: null
+    password: null
+  
+  duckdb:
+    data_path: $proj_path$/data/file/duckdb/myduck.db
+    factor_path: $proj_path$/data/file/duckdb/factorbase.db
+  
+  chdb:
+    data_path: $proj_path$/data/file/chdb
+    factor_path: $proj_path$/data/file/chdb
+
+  redis:
+    host: localhost
+    port: 6379
+    db: 0
+    password: null
+    socket_timeout: 5
+    socket_connect_timeout: 5
+    retry_on_timeout: true
+    health_check_interval: 30
+    queues:
+      pending: frozen:data:tasks
+      processing: frozen:data:processing 
+      completed: frozen:data:completed
+      failed: frozen:data:failed
+      priority_high: frozen:data:priority:high
+      priority_low: frozen:data:priority:low
+
+datasource:
+  tushare:
+    token: gx03013e909f633ecb66722df66b360f070426613316ebf06ecd3482

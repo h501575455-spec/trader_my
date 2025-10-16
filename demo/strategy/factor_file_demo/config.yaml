@@ -1,0 +1,53 @@
+# Strategy Configuration
+
+# Strategy metadata
+strategy_meta:
+  name: "Customizable Factor Strategy"
+  description: "Factor-file-based trading strategy"
+  version: "1.0.0"
+  author: "LIG"
+
+# framework-related configuration
+run_config:
+  engine: vectorbt
+  region: cn
+  trade_unit: 100
+  limit_threshold: 0.1
+  sell_rule: next-bar
+  seed: 42
+  enable_gif: False
+
+# client-related configuration
+client_config:
+  init_capital: 1000000
+  slippage:
+    slippage_type: percentage
+    slippage_rate: 0.0001
+  commission: 0.0003   # bilateral commission
+  stamp_duty: 0.001    # default 0.1%
+  min_cost: 5          # minimum commission cost
+
+# strategy-related configuration
+strategy_config:
+  benchmark: 000300.SH
+  index_code: 000300.SH
+  start_date: '20250101'
+  end_date: '20250621'
+  asset_range: (0, 10)   # range for target instruments, allow percentage settings
+  date_rule: W-MON     # note that this parameter signifies the calculation of factors after the market closes on the specified date_rule, and the adjustment of stock positions is made on the subsequent trading day
+
+# portfolio-related configuration
+portfolio_config:
+  optimizer: equal-weight
+  cov_est:
+    cov_method: null
+    cov_window: null
+  opt_func: null
+  long_short: null
+
+risk_config:
+  take_profit: 1    # percentage point for take profit threshold
+  stop_loss: -0.08    # percentage point for stop loss threshold
+  max_position_size: 0.1    # max 10% in single stock
+  sector_concentration: 0.3  # max 30% in single sector
+  rebalance_threshold: 0.2    # rebalance when single instrument market value breach the threshold

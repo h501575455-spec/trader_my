@@ -1,0 +1,131 @@
+# System default configuration - Framework level only
+
+# basic metadata configuration
+base_config:
+  database: duckdb
+
+# framework-related configuration
+run_config:
+  engine: frozen
+  region: cn
+  trade_unit: 100
+  limit_threshold: 0.1
+  sell_rule: current-bar
+  seed: 42
+  enable_gif: False
+
+# client-related configuration
+client_config:
+  init_capital: 1000000
+  slippage:
+    slippage_type: percentage
+    slippage_rate: 0.0001
+  commission: 0.0003   # bilateral commission
+  stamp_duty: 0.001    # default 0.1%
+  min_cost: 5          # minimum commission cost
+
+# strategy-related configuration
+strategy_config:
+  benchmark: 000300.SH
+  index_code: 000300.SH
+  start_date: '20200101'
+  end_date: '20240702'
+  asset_range: (0, 5)   # range for target instruments, allow percentage settings
+  date_rule: W-WED     # note that this parameter signifies the calculation of factors after the market closes on the specified date_rule, and the adjustment of stock positions is made on the subsequent trading day
+
+# portfolio-related configuration
+portfolio_config:
+  optimizer: equal-weight      # 组合优化器: equal-weight, mean-variance
+  cov_est:
+    cov_method: null           # 协方差矩阵算法: custom, shrink, poet, structured, barra
+    cov_window: null
+  opt_func: null               # 优化目标: sharpe, variance
+  long_short: False
+
+# barra风险模型相关配置
+barra_config:
+  style_factors: 
+    - size
+    - value
+    - growth
+    - momentum
+    - quality
+    - volatility
+    - liquidity
+    - leverage
+    - profitability
+    - beta
+  industry_classification: sw_l1  # 行业分类标准: basic, sw_l1, sw_l2, sw_l3, zx_l1, zx_l2, zx_l3, custom
+  factor_return_window: 252       # 因子收益估计窗口（交易日）
+  factor_cov_window: 252          # 因子协方差估计窗口（交易日）
+  halflife_factor: 90             # 因子收益衰减半衰期（交易日）
+  halflife_specific: 60           # 特质收益衰减半衰期（交易日）
+  newey_west_lags: 5              # Newey-West调整的滞后期
+  volatility_regime_adjust: true  # 是否进行波动率制度调整
+
+risk_config:
+  take_profit: 1               # percentage point for take profit threshold
+  stop_loss: -0.08             # percentage point for stop loss threshold
+  max_position_size: 0.1       # max 10% in single stock
+  sector_concentration: 0.3    # max 30% in single sector
+  rebalance_threshold: 0.2     # rebalance when single instrument market value breach the threshold
+
+# factor-related configuration
+factor_config:
+  calc:
+    lookback_window: 100     # extra lookback period to avoid factor nan values
+  # filter:
+  #   target_date: null
+  #   universe:
+  #     include_SH: True       # 上海主板
+  #     include_SZ: True       # 深圳主板
+  #     include_BJ: False      # 北交所
+  #     include_GEM: True      # 创业板
+  #     include_STAR: False    # 科创板
+  #     include_ST: False      # 包含ST股票
+  #     include_delist: False  # 包含已退市股票
+  #     min_list_days: 100     # 最小上市天数
+  #   condition: null
+  # preprocess:
+  #   pipeline:
+  #     order: null            # 预处理执行顺序
+  #     auto_apply: False      # 是否自动应用到所有因子
+    
+  #   # 归一化配置 (Min-Max Scaling)
+  #   normalize:
+  #     enabled: False         # 是否启用归一化
+  #     cross_section: null    # True=截面归一化, False=时序归一化
+  #     expanding: null        # 时序模式下: True=累积窗口, False=滚动窗口
+  #     window: null           # 滚动窗口大小(仅在expanding=False时生效)
+  #     auto_apply: False      # 是否自动应用到所有因子
+    
+  #   # 标准化配置 (Z-Score)
+  #   standardize:
+  #     enabled: False         # 是否启用标准化
+  #     cross_section: null    # True=截面标准化, False=时序标准化
+  #     expanding: null        # 时序模式下: True=累积窗口, False=滚动窗口
+  #     window: null           # 滚动窗口大小(仅在expanding=False时生效)
+  #     auto_apply: False      # 是否自动应用到所有因子
+    
+  #   # 异常值裁剪配置 (MAD方法)
+  #   clip:
+  #     enabled: False         # 是否启用异常值裁剪
+  #     expanding: null        # True=累积窗口, False=滚动窗口
+  #     window: null           # 滚动窗口大小(仅在expanding=False时生效)
+  #     multiplier: null       # MAD倍数(默认3倍MAD)
+  #     auto_apply: null       # 是否自动应用到所有因子
+    
+  #   # Winsorize配置 (分位数裁剪)
+  #   winsorize:
+  #     enabled: False         # 是否启用winsorize
+  #     limits: null           # 上下分位数限制 [下限, 上限]
+  #     expanding: null        # True=累积窗口, False=滚动窗口
+  #     window: null           # 滚动窗口大小(仅在expanding=False时生效)
+  #     auto_apply: False      # 是否自动应用到所有因子
+    
+  #   # 行业中性化配置
+  #   industry_neutralize:
+  #     enabled: False         # 是否启用行业中性化
+  #     method: null           # 中性化方法: demean, standardize, rank, regression
+  #     classification: null   # 行业分类标准: basic, sw_l1, sw_l2, sw_l3
+  #     auto_apply: False      # 是否自动应用到所有因子
